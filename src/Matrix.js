@@ -47,19 +47,29 @@ class Matrix extends React.Component {
   // }
 
   getRealMatrix() {
+    const me = this;
     const { prefixCls, cellHeight, cellWidth } = this.props;
-    return this.state.vm.numData.map((item, index) =>
-      <div
-        className={`${prefixCls}-cell`}
-        key={index}
-        style={{
-          top: item.y * parseInt(cellHeight, 10),
-          left: item.x * parseInt(cellWidth, 10),
-          width: item.col * parseInt(cellWidth, 10),
-          height: item.row * parseInt(cellHeight, 10),
-        }}
-      >{item.text}</div>
-    );
+    return this.state.vm.numData.map((item, index) => {
+      const style = {
+        top: item.y * parseInt(cellHeight, 10),
+        left: item.x * parseInt(cellWidth, 10),
+        width: item.col * parseInt(cellWidth, 10),
+        height: item.row * parseInt(cellHeight, 10),
+      };
+      if (item.x === 0) {
+        style.borderLeft = 'none';
+      }
+      if (item.y === me.state.vm.vm[0].length - item.row) {
+        style.borderBottom = 'none';
+      }
+      return (
+        <div
+          className={`${prefixCls}-cell`}
+          key={index}
+          style={style}
+        >{me.props.render(item)}</div>
+      );
+    });
   }
 
   getVirtualMatrix(data) {
@@ -87,11 +97,19 @@ class Matrix extends React.Component {
       <div
         className={`${prefixCls}`}
         style={{
-          height: height || (vm[0].length * parseInt(cellHeight, 10)),
-          width: width || (vm.length * parseInt(cellWidth, 10)),
+          height: height || (vm[0].length * parseInt(cellHeight, 10)) + 2,
+          width: width || (vm.length * parseInt(cellWidth, 10)) + 2,
         }}
       >
-        {this.getRealMatrix()}
+        <div
+          className={`${prefixCls}-wrap`}
+          style={{
+            height: (vm[0].length * parseInt(cellHeight, 10)),
+            width: (vm.length * parseInt(cellWidth, 10)),
+          }}
+        >
+          {this.getRealMatrix()}
+        </div>
       </div>
     );
   }
@@ -102,12 +120,14 @@ Matrix.defaultProps = {
   data: {},
   cellHeight: 30,
   cellWidth: 100,
+  render: (cell) => cell.text,
 };
 
 
 // http://facebook.github.io/react/docs/reusable-components.html
 Matrix.propTypes = {
   prefixCls: React.PropTypes.string,
+  className: React.PropTypes.string,
   width: React.PropTypes.oneOfType([
     React.PropTypes.string,
     React.PropTypes.number,
@@ -124,6 +144,7 @@ Matrix.propTypes = {
     React.PropTypes.string,
     React.PropTypes.number,
   ]),
+  render: React.PropTypes.func,
   data: React.PropTypes.object,
 };
 

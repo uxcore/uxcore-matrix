@@ -25,6 +25,7 @@ React matrix
 [sauce-image]: https://saucelabs.com/browser-matrix/uxcore-matrix.svg
 [sauce-url]: https://saucelabs.com/u/uxcore-matrix
 
+![demo](https://gw.alicdn.com/tps/TB1Mi1ULXXXXXXQXVXXXXXXXXXX-430-173.png)
 
 ### Development
 
@@ -42,7 +43,6 @@ npm install uxcore-tools -g
 git clone https://github.com/uxcore/uxcore-matrix
 cd uxcore-matrix
 npm install
-npm run dep
 npm run start
 ```
 
@@ -66,10 +66,31 @@ http://uxcore.github.io/components/matrix
 
 Yes please! See the [CONTRIBUTING](https://github.com/uxcore/uxcore/blob/master/CONTRIBUTING.md) for details.
 
-## API
+
 
 ## Props
 
 | Name | Type | Required | Default | Comments |
 |---|---|---|---|---|
+|prefixCls |string        |no | 'kuma-matrix'      | 类名前缀，不想使用 kuma 主题时使用 |
+|className |string        |no | -                  | 额外类名 |
+|width     |number/string |no | -                  | 矩阵宽度，不指定时根据单元格宽度计算得出|
+|height    |number/string |no | -                  | 矩阵高度，不指定时根据单元格高度计算得出|
+|cellHeight|number/string |no | 100                | 单元格高度 |
+|cellWidth |number/string |no | 30                 | 单元格宽度 |
+|render    |func(cellData)|no | (cell) => cell.text| 指定每个单元格的渲染方式|
+|data      |object        |yes| {}                 | 数据源，格式见下方 |
 
+## Data structure
+
+```
+{
+  data: [
+    { x: 0, y: 0, row: 2, col: 2, text: '1' },
+    { x: 2, y: 0, row: 2, col: 2, text: '2' },
+    { x: 4, y: 0, row: 3, col: 1, text: '3' },
+    { x: 0, y: 2, row: 1, col: 3, text: '4' },
+    { x: 3, y: 2, row: 1, col: 1, text: '5' },
+  ],
+}
+```

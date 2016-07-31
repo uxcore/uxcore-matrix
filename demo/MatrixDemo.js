@@ -24,7 +24,7 @@ class Demo extends React.Component {
         paddingLeft: 20,
         paddingTop: 20,
       }}>
-        <Matrix data={data} />
+        <Matrix data={data} cellHeight={50} width={400} />
       </div>
     );
   }
