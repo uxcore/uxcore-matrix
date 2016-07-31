@@ -97,14 +97,14 @@ class Matrix extends React.Component {
       <div
         className={`${prefixCls}`}
         style={{
-          height: height || (vm[0].length * parseInt(cellHeight, 10)) + 2,
+          height: height || (vm[0] && vm[0].length * parseInt(cellHeight, 10)) + 2,
           width: width || (vm.length * parseInt(cellWidth, 10)) + 2,
         }}
       >
         <div
           className={`${prefixCls}-wrap`}
           style={{
-            height: (vm[0].length * parseInt(cellHeight, 10)),
+            height: (vm[0] && vm[0].length * parseInt(cellHeight, 10)),
             width: (vm.length * parseInt(cellWidth, 10)),
           }}
         >
