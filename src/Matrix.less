@@ -1,0 +1,25 @@
+/**
+ * Matrix Component Style for uxcore
+ * @author eternalsky
+ *
+ * Copyright 2015-2016, Uxcore Team, Alinw.
+ * All rights reserved.
+ */
+
+@__matrix-prefix-cls: kuma-matrix;
+
+.@{__matrix-prefix-cls} {
+   position: relative;
+   display: table;
+   border-top: 1px solid @border-color;
+   border-right: 1px solid @border-color;
+}
+
+.@{__matrix-prefix-cls}-cell {
+   position: absolute;
+   display: table-cell;
+   text-align: center;
+   border-left: 1px solid @border-color;
+   border-bottom: 1px solid @border-color;
+}
+
