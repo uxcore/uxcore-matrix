@@ -45,15 +45,39 @@ module.exports = {
           vm[index][m + cell.y] = 1;
         }
       }
-      // if (prevCell.x > cell.x) {
-      //   realMatrix.push([]);
-      // }
-      // realMatrix[realMatrix.length - 1].push(cell);
-      // prevCell = cell;
     }
     return {
       numData,
       vm,
     };
+  },
+  getSubTotal(arr, start = 0, end) {
+    if (typeof arr === 'string' || typeof arr === 'number') {
+      const length = end - start;
+      let total = 0;
+      for (let i = 0; i < length; i++) {
+        total += parseInt(arr, 10);
+      }
+      return total;
+    }
+    const length = (end === undefined ? arr.length : end) - start;
+    let total = 0;
+    for (let i = 0; i < length; i++) {
+      total += arr[start + i] || arr[0];
+    }
+    return total;
+  },
+  /**
+   * get the largest array from a 2d array
+   */
+  getLargestArr(arr) {
+    let largest = [];
+    for (let i = 0; i < arr.length; i++) {
+      const item = arr[i];
+      if (item.length > largest.length) {
+        largest = item;
+      }
+    }
+    return largest;
   },
 };

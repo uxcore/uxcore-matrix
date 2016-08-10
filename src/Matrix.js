@@ -22,44 +22,35 @@ class Matrix extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     const newState = {};
+    let vmNeedUpdate = false;
     if (!deepEqual(this.data, nextProps.data)) {
       this.data = deepcopy(nextProps.data);
+      vmNeedUpdate = true;
+    }
+    if (vmNeedUpdate) {
       newState.vm = this.getVirtualMatrix(this.data);
     }
     this.setState(newState);
   }
-
-  // getRealMatrix() {
-  //   console.log(this.state.data);
-  //   return (
-  //     <table>
-  //       <tbody>
-  //       {this.state.data.map((item, i) =>
-  //         <tr key={i}>
-  //           {item.map((cell, j) =>
-  //             <td key={j} rowSpan={cell.row} colSpan={cell.col}>{cell.text}</td>
-  //           )}
-  //         </tr>
-  //       )}
-  //       </tbody>
-  //     </table>
-  //   );
-  // }
 
   getRealMatrix() {
     const me = this;
     const { prefixCls, cellHeight, cellWidth } = this.props;
     return this.state.vm.numData.map((item, index) => {
       const style = {
-        top: item.y * parseInt(cellHeight, 10),
-        left: item.x * parseInt(cellWidth, 10),
-        width: item.col * parseInt(cellWidth, 10),
-        height: item.row * parseInt(cellHeight, 10),
+        // top: item.y * parseInt(cellHeight, 10),
+        // left: item.x * parseInt(cellWidth, 10),
+        // width: item.col * parseInt(cellWidth, 10),
+        // height: item.row * parseInt(cellHeight, 10),
+        top: util.getSubTotal(cellHeight, 0, item.y),
+        left: util.getSubTotal(cellWidth, 0, item.x),
+        width: util.getSubTotal(cellWidth, item.x, item.x + item.col),
+        height: util.getSubTotal(cellHeight, item.y, item.y + item.row),
       };
       if (item.x === 0) {
         style.borderLeft = 'none';
       }
-      if (item.y === me.state.vm.vm[0].length - item.row) {
+      if (item.y === util.getLargestArr(me.state.vm.vm).length - item.row) {
         style.borderBottom = 'none';
       }
       return (
@@ -93,19 +84,21 @@ class Matrix extends React.Component {
     const me = this;
     const { prefixCls, height, width, cellWidth, cellHeight } = me.props;
     const vm = me.state.vm.vm;
+    const matrixHeight = util.getSubTotal(cellHeight, 0, util.getLargestArr(vm).length);
+    const matrixWidth = util.getSubTotal(cellWidth, 0, vm.length);
     return (
       <div
         className={`${prefixCls}`}
         style={{
-          height: height || (vm[0] && vm[0].length * parseInt(cellHeight, 10)) + 2,
-          width: width || (vm.length * parseInt(cellWidth, 10)) + 2,
+          height: height || matrixHeight + 2,
+          width: width || matrixWidth + 2,
         }}
       >
         <div
           className={`${prefixCls}-wrap`}
           style={{
-            height: (vm[0] && vm[0].length * parseInt(cellHeight, 10)),
-            width: (vm.length * parseInt(cellWidth, 10)),
+            height: matrixHeight,
+            width: matrixWidth,
           }}
         >
           {this.getRealMatrix()}
@@ -118,7 +111,7 @@ class Matrix extends React.Component {
 Matrix.defaultProps = {
   prefixCls: 'kuma-matrix',
   data: {},
-  cellHeight: 30,
+  cellHeight: 40,
   cellWidth: 100,
   render: (cell) => cell.text,
 };
@@ -139,10 +132,12 @@ Matrix.propTypes = {
   cellHeight: React.PropTypes.oneOfType([
     React.PropTypes.string,
     React.PropTypes.number,
+    React.PropTypes.array,
   ]),
   cellWidth: React.PropTypes.oneOfType([
     React.PropTypes.string,
     React.PropTypes.number,
+    React.PropTypes.array,
   ]),
   render: React.PropTypes.func,
   data: React.PropTypes.object,

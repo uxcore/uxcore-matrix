@@ -72,14 +72,14 @@ Yes please! See the [CONTRIBUTING](https://github.com/uxcore/uxcore/blob/master/
 
 | Name | Type | Required | Default | Comments |
 |---|---|---|---|---|
-|prefixCls |string        |no | 'kuma-matrix'      | 类名前缀，不想使用 kuma 主题时使用 |
-|className |string        |no | -                  | 额外类名 |
-|width     |number/string |no | -                  | 矩阵宽度，不指定时根据单元格宽度计算得出|
-|height    |number/string |no | -                  | 矩阵高度，不指定时根据单元格高度计算得出|
-|cellHeight|number/string |no | 100                | 单元格高度 |
-|cellWidth |number/string |no | 30                 | 单元格宽度 |
-|render    |func(cellData)|no | (cell) => cell.text| 指定每个单元格的渲染方式|
-|data      |object        |yes| {}                 | 数据源，格式见下方 |
+|prefixCls |string              |no | 'kuma-matrix'      | 类名前缀，不想使用 kuma 主题时使用 |
+|className |string              |no | -                  | 额外类名 |
+|width     |number/string       |no | -                  | 矩阵宽度，不指定时根据单元格宽度计算得出|
+|height    |number/string       |no | -                  | 矩阵高度，不指定时根据单元格高度计算得出|
+|cellHeight|number/string/array |no | 40                 | 单元格高度，也可以是一个数组，指定每行单元格的高度，如果数组长度不够，将取第一个行的高度|
+|cellWidth |number/string/array |no | 100                | 单元格宽度，也可以是一个数组，指定每列单元格的宽度，如果数组长度不够，将取第一个列的宽度 |
+|render    |func(cellData)      |no | (cell) => cell.text| 指定每个单元格的渲染方式|
+|data      |object              |yes| {}                 | 数据源，格式见下方 |
 
 ## Data structure
 

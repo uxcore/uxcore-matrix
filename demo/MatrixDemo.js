@@ -20,11 +20,18 @@ class Demo extends React.Component {
 
   render() {
     return (
-      <div style={{
-        paddingLeft: 20,
-        paddingTop: 20,
-      }}>
-        <Matrix data={data} cellHeight={50} width={400} />
+      <div
+        style={{
+          paddingLeft: 20,
+          paddingTop: 20,
+        }}
+      >
+        <Matrix
+          data={data}
+          cellHeight={[100, 50, 50]}
+          cellWidth={[100, 200, 300, 100, 100]}
+          width={400}
+        />
       </div>
     );
   }
