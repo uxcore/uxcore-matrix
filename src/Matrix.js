@@ -58,7 +58,7 @@ class Matrix extends React.Component {
           className={`${prefixCls}-cell`}
           key={index}
           style={style}
-        >{me.props.render(item)}</div>
+        >{me.props.render(item, style)}</div>
       );
     });
   }

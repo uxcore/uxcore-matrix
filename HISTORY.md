@@ -2,6 +2,10 @@
 
 ---
 
+## 0.1.4
+
+* `CHANGED` pass cellStyle to `render` prop
+
 ## 0.1.3
 
 * `NEW` cellWidth/cellHeight support array type.
