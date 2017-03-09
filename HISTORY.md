@@ -2,6 +2,10 @@
 
 ---
 
+## 0.2.0
+
+* `CHANGED` remove style border-color definintion
+
 ## 0.1.4
 
 * `CHANGED` pass cellStyle to `render` prop
