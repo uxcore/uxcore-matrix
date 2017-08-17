@@ -2,6 +2,10 @@
 
 ---
 
+## 0.3.0
+
+* `CHANGED` new style
+
 ## 0.2.0
 
 * `CHANGED` remove style border-color definintion
