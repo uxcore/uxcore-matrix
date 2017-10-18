@@ -5,9 +5,8 @@
  * Copyright 2015-2016, Uxcore Team, Alinw.
  * All rights reserved.
  */
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Demo from './MatrixDemo';
 
-const ReactDOM = require('react-dom');
-const React = require('react');
-const Demo = require('./MatrixDemo');
 ReactDOM.render(<Demo />, document.getElementById('UXCoreDemo'));
-

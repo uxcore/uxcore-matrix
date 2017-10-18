@@ -6,4 +6,6 @@
  * All rights reserved.
  */
 
-module.exports = require('./Matrix');
+import Matrix from './Matrix';
+
+export default Matrix;
