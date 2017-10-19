@@ -1,4 +1,4 @@
-import deepcopy from 'deepcopy';
+import cloneDeep from 'lodash.clonedeep';
 
 /**
  * (1, 3) => [1, 2, 3]
@@ -21,7 +21,7 @@ export default {
   generateVM(data) {
     const vm = [];
     const numData = data.map((item) => {
-      const newItem = deepcopy(item);
+      const newItem = cloneDeep(item);
       ['x', 'y', 'col', 'row'].forEach((key) => {
         newItem[key] = parseInt(newItem[key], 10);
       });
@@ -61,7 +61,7 @@ export default {
       }
       return total;
     }
-console.log(arr);
+
     const length = (end === undefined ? arr.length : end) - start;
     let total = 0;
     for (let i = 0; i < length; i += 1) {

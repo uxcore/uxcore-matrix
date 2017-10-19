@@ -7,7 +7,7 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import deepcopy from 'deepcopy';
+import cloneDeep from 'lodash.clonedeep';
 import deepEqual from 'deep-equal';
 import util from './util';
 
@@ -50,7 +50,7 @@ class Matrix extends React.Component {
   constructor(props) {
     super(props);
 
-    this.data = deepcopy(props.data);
+    this.data = cloneDeep(props.data);
     this.state = {
       vm: this.getVirtualMatrix(this.data),
     };
@@ -60,7 +60,7 @@ class Matrix extends React.Component {
     const newState = {};
     let vmNeedUpdate = false;
     if (!deepEqual(this.data, nextProps.data)) {
-      this.data = deepcopy(nextProps.data);
+      this.data = cloneDeep(nextProps.data);
       vmNeedUpdate = true;
     }
     if (vmNeedUpdate) {
@@ -71,7 +71,6 @@ class Matrix extends React.Component {
 
   getRealMatrix() {
     const { prefixCls, cellHeight, cellWidth } = this.props;
-    console.log(cellHeight);
     return this.state.vm.numData.map((item, index) => {
       const style = {
         top: util.getSubTotal(cellHeight, 0, item.y),
