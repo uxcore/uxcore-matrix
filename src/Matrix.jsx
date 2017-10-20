@@ -8,7 +8,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import cloneDeep from 'lodash.clonedeep';
-import deepEqual from 'deep-equal';
+import deepEqual from 'lodash.isequal';
 import util from './util';
 
 class Matrix extends React.Component {

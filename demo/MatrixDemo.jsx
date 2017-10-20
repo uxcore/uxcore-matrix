@@ -83,7 +83,7 @@ class Demo extends React.Component {
           data={data}
           cellHeight={[100, 50, 50]}
           cellWidth={[100, 200, 300, 100, 100]}
-          width={800}
+          width={810}
         />
         <h2>应用场景</h2>
         <Matrix
