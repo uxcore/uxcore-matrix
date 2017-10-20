@@ -40,14 +40,7 @@ const data2 = {
 };
 
 class Demo extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {
-    };
-  }
-
-  customRender(cellData) {
+  static customRender(cellData) {
     const style = {
       lineHeight: '50px',
       textAlign: 'left',
@@ -71,6 +64,12 @@ class Demo extends React.Component {
     );
   }
 
+  constructor(props) {
+    super(props);
+    this.state = {
+    };
+  }
+
   render() {
     return (
       <div
@@ -84,13 +83,13 @@ class Demo extends React.Component {
           data={data}
           cellHeight={[100, 50, 50]}
           cellWidth={[100, 200, 300, 100, 100]}
-          width={400}
+          width={810}
         />
         <h2>应用场景</h2>
         <Matrix
           data={data2}
           cellWidth={120}
-          render={this.customRender}
+          render={Demo.customRender}
         />
       </div>
     );
