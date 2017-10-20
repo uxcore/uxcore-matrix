@@ -2,6 +2,11 @@
 
 ---
 
+## 0.3.1
+
+* `CHANGED` update react to ver 15.x
+* `CHANGED` change deps deep-equal to lodash.isequal, deepcopy to lodash.clonedeep
+
 ## 0.3.0
 
 * `CHANGED` new style
