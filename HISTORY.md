@@ -1,6 +1,9 @@
 # history
 
 ---
+## 0.3.2
+
+* `CHANGED` change deps lodash.isequal to lodash/isEqual, for uxcore package optimize
 
 ## 0.3.1
 
