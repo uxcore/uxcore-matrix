@@ -7,7 +7,6 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import cloneDeep from 'lodash/cloneDeep';
 import deepEqual from 'lodash/isEqual';
 import { polyfill } from 'react-lifecycles-compat';
 import util from './util';
@@ -71,10 +70,9 @@ class Matrix extends React.Component {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     if (!deepEqual(prevState.data, nextProps.data)) {
-      const clonedData = cloneDeep(nextProps.data);
       return {
-        data: clonedData,
-        vm: Matrix.getVirtualMatrix(clonedData),
+        data: nextProps.data,
+        vm: Matrix.getVirtualMatrix(nextProps.data),
       };
     }
 
@@ -85,10 +83,9 @@ class Matrix extends React.Component {
   constructor(props) {
     super(props);
 
-    const clonedData = cloneDeep(props.data);
     this.state = {
-      data: clonedData,
-      vm: Matrix.getVirtualMatrix(clonedData),
+      data: props.data,
+      vm: Matrix.getVirtualMatrix(props.data),
     };
   }
 
