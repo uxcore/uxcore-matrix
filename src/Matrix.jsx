@@ -45,8 +45,8 @@ class Matrix extends React.Component {
   static defaultProps = {
     prefixCls: 'kuma-matrix',
     data: {},
-    height: 0,
-    width: 0,
+    height: undefined,
+    width: undefined,
     cellHeight: 50,
     cellWidth: 100,
     render: cell => cell.text,
