@@ -1,6 +1,10 @@
 # history
 
 ---
+## 0.4.0
+
+* `CHANGED` update react to ver 16.3
+
 ## 0.3.2
 
 * `CHANGED` change deps lodash.isequal to lodash/isEqual, for uxcore package optimize
