@@ -2,7 +2,7 @@
 import expect from 'expect.js';
 import React from 'react';
 import Enzyme, { mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-15';
+import Adapter from 'enzyme-adapter-react-16';
 import Matrix from '../src';
 
 Enzyme.configure({ adapter: new Adapter() });
@@ -68,27 +68,18 @@ describe('Matrix', () => {
     expect(matrix2.find('.kuma-matrix-wrap').exists()).to.be(true);
   });
 
-  it('should throw error if data.data is not an array', () => {
-    try {
-      render({ data: 1 });
-    } catch (e) {
-      expect(e.message.indexOf('should be an array') !== -1).to.be(true);
-    }
+  it('should render error if data.data is not an array', () => {
+    const matrix3 = render({ data: 1 });
+    expect(matrix3.find('.error').exists()).to.be(true);
   });
 
-  it('should throw error if props data is not valid', () => {
-    try {
-      render(null);
-    } catch (e) {
-      expect(e.message.indexOf('is required') !== -1).to.be(true);
-    }
+  it('should render error if props data is not valid', () => {
+    const matrix3 = render(null);
+    expect(matrix3.find('.error').exists()).to.be(true);
   });
 
-  it('should throw error if cell data is conflicted', () => {
-    try {
-      render(data3);
-    } catch (e) {
-      expect(e.message.indexOf('Conflict detect') !== -1).to.be(true);
-    }
+  it('should render error if cell data is conflicted', () => {
+    const matrix3 = render(data3);
+    expect(matrix3.find('.error').exists()).to.be(true);
   });
 });

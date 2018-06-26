@@ -7,16 +7,19 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import cloneDeep from 'lodash/cloneDeep';
 import deepEqual from 'lodash/isEqual';
+import { polyfill } from 'react-lifecycles-compat';
 import util from './util';
+
+const errorInfo = (<div className="error" style={{ color: '#f00' }}>
+  数据错误，请检查 data 属性格式是否正确！
+</div>);
 
 class Matrix extends React.Component {
   static displayName = 'Matrix';
 
   static propTypes = {
     prefixCls: PropTypes.string,
-    className: PropTypes.string,
     width: PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.number,
@@ -42,35 +45,56 @@ class Matrix extends React.Component {
   static defaultProps = {
     prefixCls: 'kuma-matrix',
     data: {},
+    height: undefined,
+    width: undefined,
     cellHeight: 50,
     cellWidth: 100,
-    render: (cell) => cell.text,
+    render: cell => cell.text,
   };
+
+  static getVirtualMatrix(data) {
+    if (data && data.data) {
+      if (data.data instanceof Array) {
+        const vm = util.generateVM(data.data);
+        if (typeof vm === 'string') {
+          return null;
+        }
+        return vm;
+      }
+
+      return null;
+    }
+
+    return null;
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (!deepEqual(prevState.data, nextProps.data)) {
+      return {
+        data: nextProps.data,
+        vm: Matrix.getVirtualMatrix(nextProps.data),
+      };
+    }
+
+    // Return null to indicate no change to state.
+    return null;
+  }
 
   constructor(props) {
     super(props);
 
-    this.data = cloneDeep(props.data);
     this.state = {
-      vm: this.getVirtualMatrix(this.data),
+      data: props.data,
+      vm: Matrix.getVirtualMatrix(props.data),
     };
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const newState = {};
-    let vmNeedUpdate = false;
-    if (!deepEqual(this.data, nextProps.data)) {
-      this.data = cloneDeep(nextProps.data);
-      vmNeedUpdate = true;
-    }
-    if (vmNeedUpdate) {
-      newState.vm = this.getVirtualMatrix(this.data);
-    }
-    this.setState(newState);
   }
 
   getRealMatrix() {
     const { prefixCls, cellHeight, cellWidth } = this.props;
+    if (!this.state.vm) {
+      return errorInfo;
+    }
+
     return this.state.vm.numData.map((item, index) => {
       const style = {
         top: util.getSubTotal(cellHeight, 0, item.y),
@@ -94,22 +118,12 @@ class Matrix extends React.Component {
     });
   }
 
-  getVirtualMatrix(data) {
-    if (data && data.data) {
-      if (data.data instanceof Array) {
-        const vm = util.generateVM(data.data);
-        if (typeof vm === 'string') {
-          throw new Error(vm);
-        }
-        return vm;
-      }
-      throw new Error('Matrix: props.data.data should be an array');
-    }
-    throw new Error('Matrix: props.data is required');
-  }
-
   render() {
     const { prefixCls, height, width, cellWidth, cellHeight } = this.props;
+    if (!this.state.vm) {
+      return errorInfo;
+    }
+
     const vm = this.state.vm.vm;
     const matrixHeight = util.getSubTotal(cellHeight, 0, util.getLargestArr(vm).length);
     const matrixWidth = util.getSubTotal(cellWidth, 0, vm.length);
@@ -134,5 +148,8 @@ class Matrix extends React.Component {
     );
   }
 }
+
+// Polyfill your component so the new lifecycles will work with older versions of React
+polyfill(Matrix);
 
 export default Matrix;
