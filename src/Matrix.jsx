@@ -94,7 +94,7 @@ class Matrix extends React.Component {
   }
 
   getRealMatrix(fixed) {
-    const { prefixCls, cellHeight, cellWidth } = this.props;
+    const { prefixCls, cellHeight, cellWidth, fixedColumnBackground } = this.props;
     if (!this.state.vm) {
       return errorInfo;
     }
@@ -113,23 +113,22 @@ class Matrix extends React.Component {
         style.borderBottom = 'none';
       }
       return (
-        !fixed
-          ? <div
-              className={`${prefixCls}-cell`}
-              key={index}
-              style={style}
-            >{this.props.render(item, style)}</div>
-          : item.x === 0 ? <div
+        !fixed ? <div
             className={`${prefixCls}-cell`}
             key={index}
             style={style}
+          >{this.props.render(item, style)}</div>
+          : item.x === 0 ? <div
+            className={`${prefixCls}-cell fixed`}
+            key={index}
+            style={{...style, height: 51, borderLeft: '1px solid #ddd', background: fixedColumnBackground || '#fff'}}
           >{this.props.render(item, style)}</div> : null
       );
     });
   }
 
   render() {
-    const { prefixCls, height, width, cellWidth, cellHeight, fixFirstColumn, maxWidth } = this.props;
+    const { prefixCls, height, width, cellWidth, cellHeight, fixFirstColumn, maxWidth, fixedColumnBackground } = this.props;
     if (!this.state.vm) {
       return errorInfo;
     }

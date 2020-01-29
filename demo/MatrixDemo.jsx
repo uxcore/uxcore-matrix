@@ -78,7 +78,7 @@ class Demo extends React.Component {
       style.textAlign = 'right';
       style.color = 'rgba(0, 0, 0, 0.8)';
       style.fontWeight = 'bold';
-      style.background = '#ddd';
+      // style.background = '#ddd';
     }
     let content = cellData.text;
     if (cellData.type === 'link') {
@@ -123,6 +123,7 @@ class Demo extends React.Component {
           render={Demo.customRender}
           fixFirstColumn={true}
           maxWidth={800}
+          fixedColumnBackground={'#aaa'}
         />
       </div>
     );
