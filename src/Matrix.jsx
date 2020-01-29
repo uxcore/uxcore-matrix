@@ -112,6 +112,14 @@ class Matrix extends React.Component {
       if (item.y === util.getLargestArr(this.state.vm.vm).length - item.row) {
         style.borderBottom = 'none';
       }
+      if (fixed && item.x === 0) {
+        style.width = parseInt(style.width, 10 ) + 2
+        style.borderLeft = '1px solid #ddd'
+        style.borderRight = '1px solid #ddd'
+        style.borderTop = '1px solid #ddd'
+        style.height = parseInt(style.height, 10) + 1
+        style.background = fixedColumnBackground || '#fff'
+      }
       return (
         !fixed ? <div
             className={`${prefixCls}-cell`}
@@ -121,7 +129,7 @@ class Matrix extends React.Component {
           : item.x === 0 ? <div
             className={`${prefixCls}-cell fixed`}
             key={index}
-            style={{...style, height: 51, borderLeft: '1px solid #ddd', background: fixedColumnBackground || '#fff'}}
+            style={style}
           >{this.props.render(item, style)}</div> : null
       );
     });

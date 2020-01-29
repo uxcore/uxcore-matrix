@@ -120,10 +120,11 @@ class Demo extends React.Component {
         <Matrix
           data={this.state.matrix2Data}
           cellWidth={120}
+          cellHeight={40}
           render={Demo.customRender}
           fixFirstColumn={true}
           maxWidth={800}
-          fixedColumnBackground={'#aaa'}
+          // fixedColumnBackground={'#aaa'}
         />
       </div>
     );
