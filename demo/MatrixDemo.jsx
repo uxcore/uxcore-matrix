@@ -12,7 +12,7 @@ const data = require('./data');
 
 const data2 = {
   data: [
-    { x: 0, y: 0, row: 1, col: 1, type: 'title', text: '订单编号' },
+    { x: 0, y: 0, row: 1, col: 1, type: 'title',  text: '订单编号' },
     { x: 1, y: 0, row: 1, col: 1, type: 'normal', text: '600,000.00(CNY)' },
     { x: 2, y: 0, row: 1, col: 1, type: 'title', text: '申请单号' },
     { x: 3, y: 0, row: 1, col: 1, type: 'normal', text: '123123' },
@@ -78,7 +78,7 @@ class Demo extends React.Component {
       style.textAlign = 'right';
       style.color = 'rgba(0, 0, 0, 0.8)';
       style.fontWeight = 'bold';
-      style.background = 'rgba(31,56,88,0.04)';
+      style.background = '#ddd';
     }
     let content = cellData.text;
     if (cellData.type === 'link') {
@@ -115,19 +115,14 @@ class Demo extends React.Component {
           paddingTop: 20,
         }}
       >
-        <h2>基本</h2>
-        <Matrix
-          data={data}
-          cellHeight={[100, 50, 50]}
-          cellWidth={[100, 200, 300, 100, 100]}
-          width={810}
-        />
         <h2>应用场景</h2>
         <button onClick={this.changeData}>修改数据重新布局</button>
         <Matrix
           data={this.state.matrix2Data}
           cellWidth={120}
           render={Demo.customRender}
+          fixFirstColumn={true}
+          maxWidth={800}
         />
       </div>
     );

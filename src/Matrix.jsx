@@ -89,7 +89,11 @@ class Matrix extends React.Component {
     };
   }
 
-  getRealMatrix() {
+  renderFixedColumn() {
+    return this.getRealMatrix(true)
+  }
+
+  getRealMatrix(fixed) {
     const { prefixCls, cellHeight, cellWidth } = this.props;
     if (!this.state.vm) {
       return errorInfo;
@@ -109,17 +113,23 @@ class Matrix extends React.Component {
         style.borderBottom = 'none';
       }
       return (
-        <div
-          className={`${prefixCls}-cell`}
-          key={index}
-          style={style}
-        >{this.props.render(item, style)}</div>
+        !fixed
+          ? <div
+              className={`${prefixCls}-cell`}
+              key={index}
+              style={style}
+            >{this.props.render(item, style)}</div>
+          : item.x === 0 ? <div
+            className={`${prefixCls}-cell`}
+            key={index}
+            style={style}
+          >{this.props.render(item, style)}</div> : null
       );
     });
   }
 
   render() {
-    const { prefixCls, height, width, cellWidth, cellHeight } = this.props;
+    const { prefixCls, height, width, cellWidth, cellHeight, fixFirstColumn, maxWidth } = this.props;
     if (!this.state.vm) {
       return errorInfo;
     }
@@ -128,23 +138,51 @@ class Matrix extends React.Component {
     const matrixHeight = util.getSubTotal(cellHeight, 0, util.getLargestArr(vm).length);
     const matrixWidth = util.getSubTotal(cellWidth, 0, vm.length);
     return (
-      <div
-        className={`${prefixCls}`}
-        style={{
-          height: height || matrixHeight + 2,
-          width: width || matrixWidth + 2,
-        }}
-      >
-        <div
-          className={`${prefixCls}-wrap`}
+      fixFirstColumn ?
+        <div style={{position: 'relative'}}>
+          <div style={{
+            maxWidth: maxWidth || window.innerWidth,
+            overflow: 'auto'
+          }}>
+            <div
+              className={`${prefixCls}`}
+              style={{
+                height: height || matrixHeight + 2,
+                width: width || matrixWidth + 2,
+              }}
+            >
+              <div
+                className={`${prefixCls}-wrap`}
+                style={{
+                  height: matrixHeight,
+                  width: matrixWidth,
+                }}
+              >
+                {this.getRealMatrix()}
+              </div>
+            </div>
+          </div>
+          <div style={{position: 'absolute', top: 0}}>
+            {this.renderFixedColumn()}
+          </div>
+        </div>
+        : <div
+          className={`${prefixCls}`}
           style={{
-            height: matrixHeight,
-            width: matrixWidth,
+            height: height || matrixHeight + 2,
+            width: width || matrixWidth + 2,
           }}
         >
-          {this.getRealMatrix()}
+          <div
+            className={`${prefixCls}-wrap`}
+            style={{
+              height: matrixHeight,
+              width: matrixWidth,
+            }}
+          >
+            {this.getRealMatrix()}
+          </div>
         </div>
-      </div>
     );
   }
 }
