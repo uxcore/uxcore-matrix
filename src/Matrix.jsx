@@ -89,16 +89,37 @@ class Matrix extends React.Component {
     };
   }
 
-  renderFixedColumn() {
-    return this.getRealMatrix(true)
+  renderFixedColumn(fixedRow) {
+    return this.getRealMatrix(!fixedRow, fixedRow)
   }
 
-  getRealMatrix(fixed) {
+  getMax(data, type) {
+    let max = 1
+    if (data && data.length ) {
+      if (type === 'row') {
+        data.filter(item => {return item.y === 0}).forEach(item => {
+          if (item.row > max) {
+            max = item.row
+          }
+        })
+      } else {
+        // data.filter(item => item.x === 0).forEach(item => {
+        //   if (item.col > max) {
+        //     max = item.col
+        //   }
+        // })
+      }
+    }
+    return max
+  }
+
+  getRealMatrix(fixed, fixedRow) {
     const { prefixCls, cellHeight, cellWidth, fixedColumnBackground } = this.props;
     if (!this.state.vm) {
       return errorInfo;
     }
 
+    const maxRow = this.getMax(this.state.vm.numData, 'row')
     return this.state.vm.numData.map((item, index) => {
       const style = {
         top: util.getSubTotal(cellHeight, 0, item.y),
@@ -120,30 +141,77 @@ class Matrix extends React.Component {
         style.height = parseInt(style.height, 10) + 1
         style.background = fixedColumnBackground || '#fff'
       }
+
+      if (fixedRow && item.y < maxRow) {
+        style.width = parseInt(style.width, 10 ) + 2
+        style.borderLeft = '1px solid #ddd'
+        style.borderRight = '1px solid #ddd'
+        style.borderTop = '1px solid #ddd'
+        style.height = parseInt(style.height, 10) + 1
+        style.background = fixedColumnBackground || '#fff'
+      }
+
       return (
-        !fixed ? <div
-            className={`${prefixCls}-cell`}
-            key={index}
-            style={style}
-          >{this.props.render(item, style)}</div>
-          : item.x === 0 ? <div
+        fixed ?
+          item.x === 0 ?
+          <div
             className={`${prefixCls}-cell fixed`}
             key={index}
             style={style}
-          >{this.props.render(item, style)}</div> : null
+          >
+            {this.props.render(item, style)}
+          </div> : null
+          :
+          fixedRow  ?
+            item.y < maxRow ?
+              <div
+                className={`${prefixCls}-cell fixed-row`}
+                key={index}
+                style={style}
+              >
+                {this.props.render(item, style)}
+              </div> : null
+            : <div
+              className={`${prefixCls}-cell`}
+              key={index}
+              style={style}
+            >
+              {this.props.render(item, style)}
+            </div>
       );
     });
   }
 
-  render() {
-    const { prefixCls, height, width, cellWidth, cellHeight, fixFirstColumn, maxWidth, fixedColumnBackground } = this.props;
-    if (!this.state.vm) {
-      return errorInfo;
-    }
-
+  renderMatrix() {
+    const { prefixCls, height, width, cellWidth, cellHeight } = this.props;
     const vm = this.state.vm.vm;
     const matrixHeight = util.getSubTotal(cellHeight, 0, util.getLargestArr(vm).length);
     const matrixWidth = util.getSubTotal(cellWidth, 0, vm.length);
+    return (
+      <div
+        className={`${prefixCls}`}
+        style={{
+          height: height || matrixHeight + 2,
+          width: width || matrixWidth + 2,
+        }}
+      >
+        <div
+          className={`${prefixCls}-wrap`}
+          style={{
+            height: matrixHeight,
+            width: matrixWidth,
+          }}
+        >
+          {this.getRealMatrix()}
+        </div>
+      </div>
+    )
+  }
+  render() {
+    const { fixFirstColumn, fixFirstRow, maxWidth, maxHeight} = this.props;
+    if (!this.state.vm) {
+      return errorInfo;
+    }
     return (
       fixFirstColumn ?
         <div style={{position: 'relative'}}>
@@ -151,45 +219,24 @@ class Matrix extends React.Component {
             maxWidth: maxWidth || window.innerWidth,
             overflow: 'auto'
           }}>
-            <div
-              className={`${prefixCls}`}
-              style={{
-                height: height || matrixHeight + 2,
-                width: width || matrixWidth + 2,
-              }}
-            >
-              <div
-                className={`${prefixCls}-wrap`}
-                style={{
-                  height: matrixHeight,
-                  width: matrixWidth,
-                }}
-              >
-                {this.getRealMatrix()}
-              </div>
-            </div>
+            {this.renderMatrix()}
           </div>
           <div style={{position: 'absolute', top: 0}}>
             {this.renderFixedColumn()}
           </div>
         </div>
-        : <div
-          className={`${prefixCls}`}
-          style={{
-            height: height || matrixHeight + 2,
-            width: width || matrixWidth + 2,
-          }}
-        >
-          <div
-            className={`${prefixCls}-wrap`}
-            style={{
-              height: matrixHeight,
-              width: matrixWidth,
-            }}
-          >
-            {this.getRealMatrix()}
-          </div>
-        </div>
+        : fixFirstRow ?
+          <div style={{position: 'relative'}}>
+            <div style={{
+              maxHeight: maxHeight || window.innerHeight,
+              overflow: 'auto'
+            }}>
+              {this.renderMatrix()}
+            </div>
+            <div style={{position: 'absolute', top: 0}}>
+              {this.renderFixedColumn(true)}
+            </div>
+          </div>  : this.renderMatrix()
     );
   }
 }
