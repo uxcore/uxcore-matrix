@@ -208,10 +208,12 @@ class Matrix extends React.Component {
     )
   }
   render() {
-    const { fixFirstColumn, fixFirstRow, maxWidth, maxHeight} = this.props;
+    const { fixFirstColumn, fixFirstRow, maxWidth, maxHeight, cellWidth, cellHeight} = this.props;
     if (!this.state.vm) {
       return errorInfo;
     }
+    const vm = this.state.vm.vm;
+    const matrixWidth = util.getSubTotal(cellWidth, 0, vm.length);
     return (
       fixFirstColumn ?
         <div style={{position: 'relative'}}>
@@ -226,7 +228,7 @@ class Matrix extends React.Component {
           </div>
         </div>
         : fixFirstRow ?
-          <div style={{position: 'relative'}}>
+          <div style={{position: 'relative', width: matrixWidth +2}}>
             <div style={{
               maxHeight: maxHeight || window.innerHeight,
               overflow: 'auto'
