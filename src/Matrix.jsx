@@ -123,7 +123,7 @@ class Matrix extends React.Component {
     return this.state.vm.numData.map((item, index) => {
       const style = {
         top: util.getSubTotal(cellHeight, 0, item.y),
-        left: util.getSubTotal(cellWidth, 0, item.x),
+        left: util.getSubTotal(cellWidth, 0, item.x) + (fixedRow && item.y < maxRow ? 1 : 0),
         width: util.getSubTotal(cellWidth, item.x, item.x + item.col),
         height: util.getSubTotal(cellHeight, item.y, item.y + item.row),
       };
@@ -144,7 +144,7 @@ class Matrix extends React.Component {
 
       if (fixedRow && item.y < maxRow) {
         style.width = parseInt(style.width, 10 ) + 2
-        style.borderLeft = '1px solid #ddd'
+        style.borderLeft = item.x === 0 ? 'none' : '1px solid #ddd'
         style.borderRight = '1px solid #ddd'
         style.borderTop = '1px solid #ddd'
         style.height = parseInt(style.height, 10) + 1
